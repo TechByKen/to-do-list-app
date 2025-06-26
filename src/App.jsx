@@ -10,8 +10,13 @@ function App() {
     setTask('');
   };
 
+  const handleDeleteTask = (indexToDelete) => {
+    const updatedTodos = todos-filter((__, index) => index !== indexToDelete);
+    setTodos(updatedTodos);
+  }
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+    <div className=" bg-blue-500 flex items-center justify-center p-4 m-9">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4">📝 To-Do List</h1>
 
@@ -25,7 +30,7 @@ function App() {
           />
           <button
             onClick={handleAddTask}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-700 text-black px-4 py-2 rounded hover:bg-blue-600"
           >
             Add
           </button>
@@ -33,8 +38,11 @@ function App() {
 
         <ul className="space-y-2">
           {todos.map((todo, index) => (
-            <li key={index} className="border-b py-2 text-gray-800">
-              {todo.text}
+            <li key={index} className="flex justify-between items-center border-b py-2 text-gray-800">
+              <span>{todo.text}</span>
+              <button onClick={()=> handleDeleteTask(index)} className='bg-red-100 text-red-700 px-2 py-1 text-sm rounded hover:bg-red-200'>
+                Delete
+              </button>
             </li>
           ))}
         </ul>
