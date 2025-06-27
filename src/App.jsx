@@ -1,8 +1,22 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function App() {
   const [task, setTask] = useState('');
   const [todos, setTodos] = useState([]);
+
+   useEffect(()=>{
+    const saveToDoList = localStorage.getItem('todos')
+    console.log("Loaded from localStorage:", saveToDoList);
+    if(saveToDoList){
+      setTodos(JSON.parse(saveToDoList))
+    }
+  }, [])
+
+  useEffect(()=>{
+    localStorage.setItem('todos', JSON.stringify(todos))
+     console.log("Saved to localStorage:", todos);
+    
+  }, [todos])
 
   const handleAddTask = () => {
     if (task.trim() === '') return;
@@ -11,16 +25,21 @@ function App() {
   };
 
   const handleDeleteTask = (indexToDelete) => {
-    const updatedTodos = todos-filter((__, index) => index !== indexToDelete);
+    const confirmDeleteTodo = window.confirm("Are you sure?")
+    if(!confirmDeleteTodo) return
+
+    const updatedTodos = todos.filter((__, index) => index !== indexToDelete);
     setTodos(updatedTodos);
   }
 
+ 
+
   return (
-    <div className=" bg-blue-500 flex items-center justify-center p-4 m-9">
+    <div className="bg-blue-500 flex items-center justify-center p-10 m-10 min-h-4 ">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4">📝 To-Do List</h1>
 
-        <div className="flex gap-2 mb-4">
+        <div className="flex gap-2 mb-4">  
           <input
             type="text"
             className="flex-grow p-2 border rounded"
