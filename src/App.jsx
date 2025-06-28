@@ -1,37 +1,42 @@
 import { useEffect, useState } from 'react';
+import TodoItem from './TodoItem';
 
 function App() {
-  const [task, setTask] = useState('');
-  const [todos, setTodos] = useState([]);
+  const [task, setTask] = useState([]);
+  const [todos, setTodos] = useState("");
 
    useEffect(()=>{
-    const saveToDoList = localStorage.getItem('todos')
-    console.log("Loaded from localStorage:", saveToDoList);
-    if(saveToDoList){
-      setTodos(JSON.parse(saveToDoList))
+    const saveToDo = JSON.parse(localStorage.getItem('todos')) 
+    if(saveToDo){
+      setTask(saveToDo)
     }
   }, [])
 
-  useEffect(()=>{
-    localStorage.setItem('todos', JSON.stringify(todos))
-     console.log("Saved to localStorage:", todos);
-    
-  }, [todos])
-
-  const handleAddTask = () => {
-    if (task.trim() === '') return;
-    setTodos([...todos, { text: task }]);
-    setTask('');
-  };
-
-  const handleDeleteTask = (indexToDelete) => {
-    const confirmDeleteTodo = window.confirm("Are you sure?")
-    if(!confirmDeleteTodo) return
-
-    const updatedTodos = todos.filter((__, index) => index !== indexToDelete);
-    setTodos(updatedTodos);
+  const updateLocalStorage = (updatedTasks) =>{
+    localStorage.setItem("todos", JSON.stringify(updatedTasks));
+    setTask(updatedTasks);
   }
 
+ 
+
+  const handleAddTodos = () => {
+    if (task.trim() !== "") {
+      const newTask = {id: Date.now(), task: todos, completed: false}
+      const updatedTasks= [...task, newTask];
+      updateLocalStorage(updatedTasks);
+      setTodos("")
+    };
+  };
+
+  const handleDeleteTodos = (id) => {
+    const updatedTasks = task.filter((item)=> item.id !== id)
+    updateLocalStorage(updatedTasks)
+  }
+
+  const toggleTodos = (id) => {
+    const updatedTasks = task.map((item)=> item.id === id ? {...item, completed: !item.completed} : item);
+    updateLocalStorage(updatedTasks);
+  }
  
 
   return (
@@ -43,28 +48,30 @@ function App() {
           <input
             type="text"
             className="flex-grow p-2 border rounded"
-            placeholder="Enter a task"
-            value={task}
+            placeholder="Enter a todo"
+            value={todos}
             onChange={(e) => setTask(e.target.value)}
           />
           <button
-            onClick={handleAddTask}
-            className="bg-blue-700 text-black px-4 py-2 rounded hover:bg-blue-600"
+            onClick={handleAddTodos}
+            className="bg-blue-400 text-black px-4 py-2 rounded hover:bg-blue-600"
           >
-            Add
+            Add Todo
           </button>
         </div>
 
-        <ul className="space-y-2">
-          {todos.map((todo, index) => (
-            <li key={index} className="flex justify-between items-center border-b py-2 text-gray-800">
-              <span>{todo.text}</span>
-              <button onClick={()=> handleDeleteTask(index)} className='bg-red-100 text-red-700 px-2 py-1 text-sm rounded hover:bg-red-200'>
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div className="space-y-2">
+          <ul >
+            {task.map((item)=>(
+              <TodoItem 
+              key={item.id}
+              item={item}
+              onDelete={handleDeleteTodos}
+              onToggle={toggleTodos}
+              />
+            ))}
+          </ul>
+        </div>
       </div>
     </div>
   );
