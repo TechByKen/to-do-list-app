@@ -35,7 +35,7 @@ function App() {
  
 
   return (
-    <div className="bg-blue-500 flex items-center justify-center p-10 m-10 min-h-4 ">
+    <div className="bg-blue-400 flex items-center justify-center relative top-3 left-16 px-4 min-h-screen mx-10 max-w-md overflow-hidden rounded-xl  shadow-md md:max-w-2xl ">
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-bold text-center mb-4">📝 To-Do List</h1>
 
