@@ -54,7 +54,7 @@ function App() {
           />
           <button
             onClick={handleAddTodos}
-            className="bg-blue-400 text-black px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-blue-400 text-black px-4 py-2 rounded cursor-pointer hover:bg-blue-600"
           >
             Add Todo
           </button>
