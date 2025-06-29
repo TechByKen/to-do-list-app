@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="bg-blue-400 flex items-center justify-center relative top-3 left-16 px-4 min-h-screen mx-10 max-w-md overflow-hidden rounded-xl  shadow-md md:max-w-2xl ">
-      <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+      <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md">
         <h1 className="text-2xl font-[] font-bold text-center mb-4">📝 To-Do App</h1>
 
         <div className="flex gap-2 mb-4">  
@@ -51,14 +51,14 @@ function App() {
           />
           <button
             onClick={handleAddTodos}
-            className="bg-blue-400 text-black px-4 py-2 rounded cursor-pointer hover:bg-blue-600"
+            className="bg-blue-400 text-black px-4 py-2 rounded cursor-pointer hover:bg-blue-600 hover:text-white"
           >
             Add 
           </button>
         </div>
 
-        <div className="space-y-2">
-          <ul >
+        <div >
+          <ul className="space-y-2" >
             {task.map((item)=>(
               <TodoItem 
               key={item.id}
